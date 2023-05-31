@@ -5,12 +5,11 @@ import {MatchedRecord} from "./matched_record.js";
 import {Transaction} from "./transaction.js";
 import {Report} from "./report.js"
 
-let memberManager:MemberManager;
-let transactionManager:TransactionManager;
+let memberManager:MemberManager = null;
+let transactionManager:TransactionManager = null;
 
-const renderAbsentMembers = (absentMembers: Array<Member>)=>{
-    let table = document.getElementById("absentMembers");
-    table.innerHTML = "<tr><th class='name'>性</th><th class='name'>名</th><th class='amount'>子弟数</th><th class='amount'>うち休学</th></tr>";
+const renderAbsentMembers = (tableAbsentMembers:Element, absentMembers: Array<Member>)=>{
+    tableAbsentMembers.innerHTML = "<tr><th class='name'>性</th><th class='name'>名</th><th class='amount'>子弟数</th><th class='amount'>うち休学</th></tr>";
 
     absentMembers.forEach((member)=>{
         let tableRow = document.createElement("tr");
@@ -31,15 +30,14 @@ const renderAbsentMembers = (absentMembers: Array<Member>)=>{
         tableDataNumAbsentChildren.append(member.childrenState.numAbsentChildren.toString());
         tableRow.append(tableDataNumAbsentChildren);
 
-        table.append(tableRow);
+        tableAbsentMembers.append(tableRow);
     });
 }
 
-const renderNotPaidMembers = (notPaidMembers:Array<Member>)=>{
-    let table = document.getElementById("notPaidMembers");
-    table.innerHTML = "<tr><th class='name'>性</th><th class='name'>名</th><th class='name'>パートナー性</th>";
+const renderUnpaidMembers = (tableUnpaidMembers:Element, unpaidMembers:Array<Member>)=>{
+    tableUnpaidMembers.innerHTML = "<tr><th class='name'>性</th><th class='name'>名</th><th class='name'>パートナー性</th>";
 
-    notPaidMembers.forEach((member)=>{
+    unpaidMembers.forEach((member)=>{
         let tableRow = document.createElement("tr");
 
         let tableDataLastNameInJapanese = document.createElement("td");
@@ -54,14 +52,13 @@ const renderNotPaidMembers = (notPaidMembers:Array<Member>)=>{
         tableDataPartnerLastName.append(member.partner.name.lastName);
         tableRow.append(tableDataPartnerLastName);
 
-        table.append(tableRow);
+        tableUnpaidMembers.append(tableRow);
     });
 }
 
-const renderWrongAmountMembers = (matchedRecord: Array<MatchedRecord>)=>{
+const renderWrongAmountMembers = (tableWrongAmountMembers:Element, matchedRecord: Array<MatchedRecord>)=>{
 
-    let table = document.getElementById("wrongAmountMembers");
-    table.innerHTML = "<tr><th class='name'>性</th><th class='name'>名</th><th class='name'>パートナー性</th><th class='amount'>請求金額</th><th class='amount'>振込金額</th><th class='amount'>誤差</th><th>振込日時</th><th>振込名義人</th><th class='note'>備考欄</th></tr>";
+    tableWrongAmountMembers.innerHTML = "<tr><th class='name'>性</th><th class='name'>名</th><th class='name'>パートナー性</th><th class='amount'>請求金額</th><th class='amount'>振込金額</th><th class='amount'>誤差</th><th class='date'>振込日時</th><th>振込名義人</th><th class='note'>備考欄</th></tr>";
 
     matchedRecord.forEach((matchedRecord)=>{
         let tableRow = document.createElement("tr");
@@ -109,16 +106,15 @@ const renderWrongAmountMembers = (matchedRecord: Array<MatchedRecord>)=>{
         tableDataPurpose.append(transaction.purpose.toString());
         tableRow.append(tableDataPurpose);
 
-        table.append(tableRow);
+        tableWrongAmountMembers.append(tableRow);
     });
 }
-const renderInvalidMembers = (members: Array<Member>) =>{
+const renderInvalidMembers = (tablePaidMembers:Element, members: Array<Member>) =>{
 
 }
 
-const renderPaidMembers = (matchedRecord: Array<MatchedRecord>)=>{
-    let table = document.getElementById("paidMembers");
-    table.innerHTML = "<tr><th class='name'>性</th><th class='name'>名</th><th class='name'>パートナー性</th><th class='amount'>請求金額</th><th class='amount'>振込金額</th><th>振込日時</th><th>振込名義人</th><th class='note'>備考欄</th></tr>";
+const renderPaidMembers = (tablePaidMembers:Element, matchedRecord: Array<MatchedRecord>)=>{
+    tablePaidMembers.innerHTML = "<tr><th class='name'>性</th><th class='name'>名</th><th class='name'>パートナー性</th><th class='amount'>請求金額</th><th class='amount'>振込金額</th><th class='date'>振込日時</th><th>振込名義人</th><th class='note'>備考欄</th></tr>";
 
     matchedRecord.forEach((matchedRecord)=>{
         let tableRow = document.createElement("tr");
@@ -159,21 +155,27 @@ const renderPaidMembers = (matchedRecord: Array<MatchedRecord>)=>{
         tableDataPurpose.append(transaction.purpose.toString());
         tableRow.append(tableDataPurpose);
 
-        table.append(tableRow);
+        tablePaidMembers.append(tableRow);
     });
 }
 
 const renderResult = (report: Report) =>{
-    renderWrongAmountMembers(report.wrongAmountMembers);
-    renderNotPaidMembers(report.unpaidMembers);
-    renderAbsentMembers(report.absentMembers);
-    renderPaidMembers(report.paidMembers);
-    renderInvalidMembers(report.invalidMembers);
+    let divTuitionFeeResult = document.getElementById("tuition_fee_result");
+    let divAnnualFeeResult = document.getElementById("annual_fee_result");
+    divTuitionFeeResult.style.display = "block";
+    divAnnualFeeResult.style.display = "none";
+
+    renderWrongAmountMembers(divTuitionFeeResult.querySelector(".wrongAmountMembers"), report.wrongAmountMembers);
+    renderUnpaidMembers(divTuitionFeeResult.querySelector(".unpaidMembers"), report.unpaidMembers);
+    renderAbsentMembers(divTuitionFeeResult.querySelector(".absentMembers"), report.absentMembers);
+    renderPaidMembers(divTuitionFeeResult.querySelector(".paidMembers"), report.paidMembers);
+    renderInvalidMembers(divTuitionFeeResult.querySelector(".invalidMembers"), report.invalidMembers);
 }
 
 const renderDataProperties =(numMembers:number, numTransactions:number, oldestTransaction:Transaction, newestTransaction:Transaction) =>{
-    let table = document.getElementById("dataProperties");
-    table.innerHTML = "<tr><th>対象会員数</th><th>対象振込件数</th><th>最も古い振込</th><th>最も新しい振込</th></tr>";
+    const divProperties = document.getElementById("properties");
+    let tableDataProperties = divProperties.querySelector(".dataProperties");
+    tableDataProperties.innerHTML = "<tr><th>対象会員数</th><th>対象振込件数</th><th>最も古い振込</th><th>最も新しい振込</th></tr>";
     let tableRow = document.createElement("tr");
     let tableDataNumMembers = document.createElement("td");
     tableDataNumMembers.append(numMembers.toString());
@@ -191,10 +193,10 @@ const renderDataProperties =(numMembers:number, numTransactions:number, oldestTr
     tableDataNewestTransaction.append(newestTransaction.date.toISOString().split('T')[0]);
     tableRow.append(tableDataNewestTransaction);
 
-    table.append(tableRow);
+    tableDataProperties.append(tableRow);
 }
 
-const executeOperation = () =>{
+const executeTuitionCalculation= () =>{
 
     let absentMembers = Array<Member>();
     let unpaidMembers = Array<Member>();
@@ -245,8 +247,16 @@ const executeOperation = () =>{
 
     renderDataProperties(memberManager.members.length, transactionManager.transactions.length,
         transactionManager.getOldestTransaction(), transactionManager.getNewestTransaction())
+
+
+
+
     renderResult(new Report(unpaidMembers, wrongAmountMembers, invalidMembers, absentMembers, paidMembers ));
 };
+
+const executeAnnualFeeCalculation= () => {
+
+}
 
 window.onload = ()=> {
     const memberListInput = document.getElementById("member_list_input");
@@ -257,9 +267,6 @@ window.onload = ()=> {
         const reader = new FileReader();
         reader.onload = (event) => {
             memberManager = new MemberManager(event.target.result.toString());
-
-            if(memberManager !== null && transactionManager !== null)
-                executeOperation();
         };
         reader.readAsText(file);
     };
@@ -270,11 +277,12 @@ window.onload = ()=> {
         const reader = new FileReader();
         reader.onload = (event) => {
             transactionManager = new TransactionManager(event.target.result.toString());
-
-            if(memberManager !== null && transactionManager !== null)
-                executeOperation();
         };
         reader.readAsText(file);
     };
 
+    const tuitionCheckButton = document.getElementById("tuitionCheckButton");
+    tuitionCheckButton.onclick = executeTuitionCalculation;
+    const annualFeeButton = document.getElementById("annualFeeButton");
+    annualFeeButton.onclick = executeAnnualFeeCalculation;
 }

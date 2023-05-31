@@ -1,3 +1,36 @@
+body{
+    font-size: small;
+}
+
+#properties{
+    position: center;
+    width: 600px;
+}
+
+h3.center {
+    text-align: center;
+}
+
+div.base {
+    height: 100%;
+    min-width: 1024px;
+    width:1024px;
+}
+
+div.panel {
+    float: left;
+    width: 400px;
+    height: 50px;
+    margin: 10px;
+    padding: 20px;
+    text-align: center;
+}
+
+button.check{
+    width: 140px;
+    height: 50px;
+}
+
 table{
     border-collapse: collapse;
     font-size: smaller;
@@ -9,12 +42,16 @@ th, td {
     padding-right: 5px;
 }
 
+th.date {
+    width:60px;
+}
+
 th.name{
     width: 95px;
 }
 
 th.amount{
-    width: 80px;
+    width: 45px;
 }
 
 th.note{

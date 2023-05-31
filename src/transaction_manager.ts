@@ -43,12 +43,12 @@ export class TransactionManager
     getNewestTransaction() {
         if (this.transactions.length === 0)
             return null;
-        return this.transactions[0];
+        return this.transactions[this.transactions.length-1];
     }
 
     getOldestTransaction() {
         if (this.transactions.length === 0)
             return null;
-        return this.transactions[this.transactions.length-1];
+        return this.transactions[0];
     }
 }
