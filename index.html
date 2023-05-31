@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>授業料振り込み自動チェッカー</title>
+</head>
+<body>
+<h3>授業料振り込み自動チェッカー</h3>
+会員名簿のCSV、銀行取引のCSVファイルを選択してください。<br/><br/>
+<div>
+    <label for="member_list_input">会員名簿のCSV:</label>
+    <input type="file" name="member_list" id="member_list_input" accept=".csv">
+</div>
+<div>
+    <label for="bank_transactions_input">銀行取引のCSV:</label>
+    <input type="file" name="bank_transactions" id="bank_transactions_input" accept=".csv">
+</div>
+
+<div id="result">
+<h3>解析結果</h3>
+<table id="dataProperties"></table>
+
+<h4>振り込みが確認できない会員</h4>
+<table id="notPaidMembers"></table>
+
+<h4>誤った金額を振り込んでいると思われる会員</h4>
+<table id="wrongAmountMembers"></table>
+
+<h4>判定不能な会員</h4>
+<table id="invalidMembers"></table>
+
+<hr>
+
+<h4>子弟全員が休学中の会員</h4>
+<table id="absentMembers"></table>
+
+<h4>適切な振り込みが確認された会員</h4>
+<table id="paidMembers"></table>
+
+</div>
+<script type="module" src="dist/main.js"></script>
+<!--<script src="report.js"></script>-->
+<!--<script src="const.js"></script>-->
+<!--<script src="member.js"></script>-->
+<!--<script src="transaction.js"></script>-->
+<!--<script src="member_manager.js"></script>-->
+<!--<script src="transaction_manager.js"></script>-->
+<!--<script src="index.js"></script>-->
+</body>
+</html>

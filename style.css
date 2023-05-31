@@ -1,0 +1,27 @@
+table{
+    border-collapse: collapse;
+    font-size: smaller;
+}
+
+th, td {
+    border: 1px solid black;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+th.name{
+    width: 95px;
+}
+
+th.amount{
+    width: 80px;
+}
+
+th.note{
+    width: 300px;
+    text-overflow: ellipsis;
+}
+
+td.amount {
+    text-align: right;
+}
