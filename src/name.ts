@@ -6,4 +6,12 @@ export class Name{
         this.firstName = firstName;
         this.lastName = lastName;
     }
+
+    public isFullNameKnown(): boolean{
+        return this.firstName !== "" && this.lastName !== "";
+    }
+
+    public isOnlyLastNameKnown(): boolean{
+        return this.firstName === "" && this.lastName !== "";
+    }
 }
