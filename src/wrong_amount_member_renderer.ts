@@ -4,10 +4,12 @@ import {createSimpleDateString, createTableData} from "./utils.js";
 export class WrongAmountMemberRenderer{
     tbody: Element;
     span: Element;
+    fixedAmount?: number;
 
-    constructor(tbody:Element, span: Element) {
+    constructor(tbody:Element, span: Element, fixAmount?: number) {
         this.tbody = tbody;
         this.span = span;
+        this.fixedAmount = fixAmount;
     }
 
     render(matchedRecords: Array<MatchedRecord>){
@@ -18,14 +20,15 @@ export class WrongAmountMemberRenderer{
             const member = matchedRecord.member;
             const transaction = matchedRecord.transactions[0];
 
-            const difference = transaction.amount - member.childrenState.getQuarterlyTuition();
+            const requiredAmount = this.fixedAmount ?? member.childrenState.getQuarterlyTuition();
+            const difference = transaction.amount - requiredAmount;
             const difText = difference < 0 ? Math.abs(difference).toString() + "不足" : difference.toString() + "余剰"
 
             const tableData = createTableData([
                 member.nameInJapanese.lastName,
                 member.nameInJapanese.firstName,
                 member.partner.name.lastName,
-                member.childrenState.getQuarterlyTuition().toString(),
+                requiredAmount.toString(),
                 transaction.amount.toString(),
                 difText,
                 createSimpleDateString(transaction.date),

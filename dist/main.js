@@ -1,12 +1,14 @@
 import { MemberManager } from "./member_manager.js";
 import { TransactionManager } from "./transaction_manager.js";
 import { TuitionChecker } from "./tuition_checker.js";
+import { TuitionFeeRenderer } from "./tuition_fee_renderer.js";
 import { PropertyRenderer } from "./property_renderer.js";
 import { PaidMemberRenderer } from "./paid_member_renderer.js";
 import { ChildStateRenderer } from "./child_state_renderer.js";
 import { WrongAmountMemberRenderer } from "./wrong_amount_member_renderer.js";
 import { UnpaidMemberRenderer } from "./unpaid_member_renderer.js";
 import { AnnualFeeChecker } from "./annual_fee_checker.js";
+import { AnnualFeeRenderer } from "./annual_fee_renderer.js";
 let memberManager = null;
 let transactionManager = null;
 const renderResult = (report) => {
@@ -25,11 +27,14 @@ const renderResult = (report) => {
 };
 const execute = (event) => {
     const id = event.target.id;
+    document.getElementById("properties").style.display = null;
     const propertyRenderer = new PropertyRenderer(document.getElementById("statistics"), document.getElementById("prices"));
     propertyRenderer.renderProperties(memberManager.members.length, transactionManager.transactions.length, transactionManager.getOldestTransaction(), transactionManager.getNewestTransaction());
+    const divResult = document.getElementById("result");
     const checker = id === "tuitionCheckButton" ? new TuitionChecker() : new AnnualFeeChecker();
+    const renderer = id === "tuitionCheckButton" ? new TuitionFeeRenderer(divResult) : new AnnualFeeRenderer(divResult);
     const report = checker.check(memberManager.members, transactionManager.transactions);
-    renderResult(report);
+    renderer.render(report);
 };
 window.onload = () => {
     const memberListInput = document.getElementById("member_list_input");

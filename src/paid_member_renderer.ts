@@ -5,10 +5,12 @@ export class PaidMemberRenderer{
 
     private tbody: Element;
     private span: Element;
+    private readonly fixedAmount?: number
 
-    constructor(tbodyPaidMembers:Element, spanPaidMembersStat:Element) {
+    constructor(tbodyPaidMembers:Element, spanPaidMembersStat:Element, fixedAmount?: number) {
         this.tbody = tbodyPaidMembers;
         this.span = spanPaidMembersStat;
+        this.fixedAmount = fixedAmount;
     }
 
      render = (matchedRecords: Array<MatchedRecord>)=>{
@@ -18,12 +20,13 @@ export class PaidMemberRenderer{
             let tableRow = document.createElement("tr");
             const member = matchedRecord.member;
             const transaction = matchedRecord.transactions[0];
+            const requiredAmount = this.fixedAmount ?? member.childrenState.getQuarterlyTuition();
 
             const tableData = createTableData([
                 member.nameInJapanese.lastName,
                 member.nameInJapanese.firstName,
                 member.partner.name.lastName,
-                member.childrenState.getQuarterlyTuition().toString(),
+                requiredAmount.toString(),
                 transaction.amount.toString(),
                 createSimpleDateString(transaction.date),
                 transaction.payer,

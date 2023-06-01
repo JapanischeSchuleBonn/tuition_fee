@@ -55,7 +55,7 @@
     </div>
 
     <div id="result" style="display: none">
-        <div>
+        <div class="unpaidMembers">
             <h4>振り込みが確認できない会員 (<span id="unpaidMembersStat"></span>)</h4>
             <table>
                 <thead>
@@ -68,7 +68,7 @@
                 <tbody class="unpaidMembers"></tbody>
             </table>
         </div>
-        <div>
+        <div class="wrongAmountMembers">
             <h4>誤った金額を振り込んでいると思われる会員 (<span id="wrongAmountMembersStat"></span>)</h4>
             <table>
                 <thead>
@@ -87,7 +87,7 @@
                 <tbody class="wrongAmountMembers"></tbody>
             </table>
         </div>
-        <div>
+        <div class="invalidMembers">
             <h4>判定不能な会員 (<span id="invalidMembersStat"></span>)</h4>
             <table>
                 <thead>
@@ -102,7 +102,7 @@
             </table>
         </div>
         <hr>
-        <div>
+        <div class="absentMembers">
             <h4>子弟全員が休学中の会員 (<span id="absentMembersStat"></span>)</h4>
             <table>
                 <thead>
@@ -116,7 +116,7 @@
                 <tbody class="absentMembers"></tbody>
             </table>
         </div>
-        <div>
+        <div class="paidMembers">
             <h4>適切な振り込みが確認された会員 (<span id="paidMembersStat"></span>)</h4>
             <table>
                 <thead>

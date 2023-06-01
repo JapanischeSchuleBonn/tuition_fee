@@ -1,4 +1,0 @@
-
-interface IExecution{
-    execute() : void;
-}
