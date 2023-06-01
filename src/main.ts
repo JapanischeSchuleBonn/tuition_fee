@@ -8,8 +8,8 @@ import {Report} from "./report.js"
 let memberManager:MemberManager = null;
 let transactionManager:TransactionManager = null;
 
-const renderAbsentMembers = (tableAbsentMembers:Element, absentMembers: Array<Member>)=>{
-    tableAbsentMembers.innerHTML = "<tr><th class='name'>性</th><th class='name'>名</th><th class='amount'>子弟数</th><th class='amount'>うち休学</th></tr>";
+const renderAbsentMembers = (tableAbsentMembers:Element, absentMembersStat: Element, absentMembers: Array<Member>)=>{
+    tableAbsentMembers.innerHTML = "";
 
     absentMembers.forEach((member)=>{
         let tableRow = document.createElement("tr");
@@ -32,10 +32,13 @@ const renderAbsentMembers = (tableAbsentMembers:Element, absentMembers: Array<Me
 
         tableAbsentMembers.append(tableRow);
     });
+
+    absentMembersStat.textContent = " (" + absentMembers.length.toString() + "/" + memberManager.members.length.toString() + ")";
+
 }
 
-const renderUnpaidMembers = (tableUnpaidMembers:Element, unpaidMembers:Array<Member>)=>{
-    tableUnpaidMembers.innerHTML = "<tr><th class='name'>性</th><th class='name'>名</th><th class='name'>パートナー性</th>";
+const renderUnpaidMembers = (tableUnpaidMembers:Element, unpaidMembersStat:Element, unpaidMembers:Array<Member>)=>{
+    tableUnpaidMembers.innerHTML = "";
 
     unpaidMembers.forEach((member)=>{
         let tableRow = document.createElement("tr");
@@ -54,11 +57,13 @@ const renderUnpaidMembers = (tableUnpaidMembers:Element, unpaidMembers:Array<Mem
 
         tableUnpaidMembers.append(tableRow);
     });
+
+    unpaidMembersStat.textContent = " (" + unpaidMembers.length.toString() + "/" + memberManager.members.length.toString() + ")";
 }
 
-const renderWrongAmountMembers = (tableWrongAmountMembers:Element, matchedRecord: Array<MatchedRecord>)=>{
+const renderWrongAmountMembers = (tableWrongAmountMembers:Element, wrongAmountMembersStat:Element, matchedRecord: Array<MatchedRecord>)=>{
 
-    tableWrongAmountMembers.innerHTML = "<tr><th class='name'>性</th><th class='name'>名</th><th class='name'>パートナー性</th><th class='amount'>請求金額</th><th class='amount'>振込金額</th><th class='amount'>誤差</th><th class='date'>振込日時</th><th>振込名義人</th><th class='note'>備考欄</th></tr>";
+    tableWrongAmountMembers.innerHTML = "";
 
     matchedRecord.forEach((matchedRecord)=>{
         let tableRow = document.createElement("tr");
@@ -108,13 +113,16 @@ const renderWrongAmountMembers = (tableWrongAmountMembers:Element, matchedRecord
 
         tableWrongAmountMembers.append(tableRow);
     });
+
+    wrongAmountMembersStat.textContent = " (" + matchedRecord.length.toString() + "/" + memberManager.members.length.toString() + ")";
 }
-const renderInvalidMembers = (tablePaidMembers:Element, members: Array<Member>) =>{
+
+const renderInvalidMembers = (tablePaidMembers:Element, invalidMembersStat: Element, members: Array<Member>) =>{
 
 }
 
-const renderPaidMembers = (tablePaidMembers:Element, matchedRecord: Array<MatchedRecord>)=>{
-    tablePaidMembers.innerHTML = "<tr><th class='name'>性</th><th class='name'>名</th><th class='name'>パートナー性</th><th class='amount'>請求金額</th><th class='amount'>振込金額</th><th class='date'>振込日時</th><th>振込名義人</th><th class='note'>備考欄</th></tr>";
+const renderPaidMembers = (tablePaidMembers:Element, paidMembersStat:Element, matchedRecord: Array<MatchedRecord>)=>{
+    tablePaidMembers.innerHTML = "";
 
     matchedRecord.forEach((matchedRecord)=>{
         let tableRow = document.createElement("tr");
@@ -157,6 +165,8 @@ const renderPaidMembers = (tablePaidMembers:Element, matchedRecord: Array<Matche
 
         tablePaidMembers.append(tableRow);
     });
+
+    paidMembersStat.textContent = " (" + matchedRecord.length.toString() + "/" + memberManager.members.length.toString() + ")";
 }
 
 const renderResult = (report: Report) =>{
@@ -165,17 +175,23 @@ const renderResult = (report: Report) =>{
     divTuitionFeeResult.style.display = "block";
     divAnnualFeeResult.style.display = "none";
 
-    renderWrongAmountMembers(divTuitionFeeResult.querySelector(".wrongAmountMembers"), report.wrongAmountMembers);
-    renderUnpaidMembers(divTuitionFeeResult.querySelector(".unpaidMembers"), report.unpaidMembers);
-    renderAbsentMembers(divTuitionFeeResult.querySelector(".absentMembers"), report.absentMembers);
-    renderPaidMembers(divTuitionFeeResult.querySelector(".paidMembers"), report.paidMembers);
-    renderInvalidMembers(divTuitionFeeResult.querySelector(".invalidMembers"), report.invalidMembers);
+    renderWrongAmountMembers(divTuitionFeeResult.querySelector(".wrongAmountMembers"),
+        document.getElementById("wrongAmountMembersStat"), report.wrongAmountMembers);
+    renderUnpaidMembers(divTuitionFeeResult.querySelector(".unpaidMembers"),
+        document.getElementById("unpaidMembersStat"), report.unpaidMembers);
+    renderAbsentMembers(divTuitionFeeResult.querySelector(".absentMembers"),
+        document.getElementById("absentMembersStat"), report.absentMembers);
+    renderPaidMembers(divTuitionFeeResult.querySelector(".paidMembers"),
+        document.getElementById("paidMembersStat"), report.paidMembers);
+    renderInvalidMembers(divTuitionFeeResult.querySelector(".invalidMembers"),
+        document.getElementById("invalidMembersStat"), report.invalidMembers);
 }
 
 const renderDataProperties =(numMembers:number, numTransactions:number, oldestTransaction:Transaction, newestTransaction:Transaction) =>{
     const divProperties = document.getElementById("properties");
+    divProperties.style.display = null;
     let tableDataProperties = divProperties.querySelector(".dataProperties");
-    tableDataProperties.innerHTML = "<tr><th>対象会員数</th><th>対象振込件数</th><th>最も古い振込</th><th>最も新しい振込</th></tr>";
+    tableDataProperties.innerHTML = "";
     let tableRow = document.createElement("tr");
     let tableDataNumMembers = document.createElement("td");
     tableDataNumMembers.append(numMembers.toString());
@@ -247,9 +263,6 @@ const executeTuitionCalculation= () =>{
 
     renderDataProperties(memberManager.members.length, transactionManager.transactions.length,
         transactionManager.getOldestTransaction(), transactionManager.getNewestTransaction())
-
-
-
 
     renderResult(new Report(unpaidMembers, wrongAmountMembers, invalidMembers, absentMembers, paidMembers ));
 };

@@ -19,22 +19,84 @@
         <button class="check" id="annualFeeButton">年会費の振り込み</button>
     </div>
 
-    <div id="properties">
+    <div id="properties" style="display: none">
     <h3>解析結果</h3>
-    <table class="dataProperties" ></table>
+    <table>
+        <thead>
+            <tr>
+                <th>対象会員数</th>
+                <th>対象振込件数</th>
+                <th>最も古い振込</th>
+                <th>最も新しい振込</th>
+            </tr>
+        </thead>
+        <tbody class="dataProperties"></tbody>
+    </table>
     </div>
+
     <div id="tuition_fee_result" style="display: none">
-        <h4>振り込みが確認できない会員</h4>
-        <table class="unpaidMembers"></table>
-        <h4>誤った金額を振り込んでいると思われる会員</h4>
-        <table class="wrongAmountMembers"></table>
-        <h4>判定不能な会員</h4>
+        <h4>振り込みが確認できない会員<span id="unpaidMembersStat"></span></h4>
+        <table>
+            <thead>
+                <tr>
+                    <th class='name'>性</th>
+                    <th class='name'>名</th>
+                    <th class='name'>パートナー性</th>
+                </tr>
+            </thead>
+            <tbody class="unpaidMembers"></tbody>
+        </table>
+
+        <h4>誤った金額を振り込んでいると思われる会員<span id="wrongAmountMembersStat"></span></h4>
+        <table>
+            <thead>
+                <tr>
+                    <th class='name'>性</th>
+                    <th class='name'>名</th>
+                    <th class='name'>パートナー性</th>
+                    <th class='amount'>請求金額</th>
+                    <th class='amount'>振込金額</th>
+                    <th class='amount'>誤差</th>
+                    <th class='date'>振込日時</th>
+                    <th>振込名義人</th>
+                    <th class='note'>備考欄</th>
+                </tr>
+            </thead>
+            <tbody class="wrongAmountMembers"></tbody>
+        </table>
+
+        <h4>判定不能な会員<span id="invalidMembersStat"></span></h4>
         <table class="invalidMembers"></table>
         <hr>
-        <h4>子弟全員が休学中の会員</h4>
-        <table class="absentMembers"></table>
-        <h4>適切な振り込みが確認された会員</h4>
-        <table class="paidMembers"></table>
+        <h4>子弟全員が休学中の会員<span id="absentMembersStat"></span></h4>
+        <table>
+            <thead>
+                <tr>
+                    <th class='name'>性</th>
+                    <th class='name'>名</th>
+                    <th class='amount'>子弟数</th>
+                    <th class='amount'>うち休学</th>
+                </tr>
+            </thead>
+            <tbody class="absentMembers"></tbody>
+        </table>
+
+        <h4>適切な振り込みが確認された会員<span id="paidMembersStat"></span></h4>
+        <table>
+            <thead>
+                <tr>
+                    <th class='name'>性</th>
+                    <th class='name'>名</th>
+                    <th class='name'>パートナー性</th>
+                    <th class='amount'>請求金額</th>
+                    <th class='amount'>振込金額</th>
+                    <th class='date'>振込日時</th>
+                    <th>振込名義人</th>
+                    <th class='note'>備考欄</th>
+                </tr>
+            </thead>
+            <tbody class="paidMembers"></tbody>
+        </table>
     </div>
 
     <div id="annual_fee_result" style="display: none">
