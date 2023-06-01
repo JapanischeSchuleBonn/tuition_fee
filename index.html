@@ -8,30 +8,51 @@
 <body>
 <div class="base">
     <h3 class="center">振り込み自動チェッカー</h3>
-    <div class="panel">
-        <label for="member_list_input">会員名簿のCSV:</label>
-        <input type="file" name="member_list" id="member_list_input" accept=".csv"> <br/>
-        <label for="bank_transactions_input">銀行取引のCSV:</label>
-        <input type="file" name="bank_transactions" id="bank_transactions_input" accept=".csv">
-    </div>
-    <div class="panel">
-        <button class="check" id="tuitionCheckButton">授業料の振り込み</button>
-        <button class="check" id="annualFeeButton">年会費の振り込み</button>
+    <div class="input">
+        <div class="panel">
+            <label for="member_list_input">会員名簿のCSV:</label>
+            <input type="file" name="member_list" id="member_list_input" accept=".csv"> <br/>
+            <label for="bank_transactions_input">銀行取引のCSV:</label>
+            <input type="file" name="bank_transactions" id="bank_transactions_input" accept=".csv">
+        </div>
+        <div class="panel">
+            <button class="check" id="tuitionCheckButton">授業料</button>
+            <button class="check" id="annualFeeButton">年会費</button>
+        </div>
     </div>
 
     <div id="properties" style="display: none">
-    <h3>解析結果</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>対象会員数</th>
-                <th>対象振込件数</th>
-                <th>最も古い振込</th>
-                <th>最も新しい振込</th>
-            </tr>
-        </thead>
-        <tbody class="dataProperties"></tbody>
-    </table>
+        <div class="statistics">
+            <table>
+                <thead>
+                    <tr>
+                        <th>対象会員数</th>
+                        <th>対象振込件数</th>
+                        <th>最古の振込</th>
+                        <th>最新の振込</th>
+                    </tr>
+                </thead>
+                <tbody id="statistics"></tbody>
+            </table>
+        </div>
+        <div class="prices">
+            <table>
+                <thead>
+                    <tr>
+                        <th>年会費</th>
+                        <th>通常授業料</th>
+                        <th>年少授業料</th>
+                        <th>算数授業料</th>
+                        <th>第二子割引</th>
+                        <th>第三子割引</th>
+                        <th>第二子割引（年少）</th>
+                        <th>第三子割引（年少）</th>
+                    </tr>
+                </thead>
+                <tbody id="prices"></tbody>
+            </table>
+        </div>
+
     </div>
 
     <div id="tuition_fee_result" style="display: none">

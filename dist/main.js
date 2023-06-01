@@ -2,6 +2,7 @@ import { MemberManager } from "./member_manager.js";
 import { TransactionManager } from "./transaction_manager.js";
 import { MatchedRecord } from "./matched_record.js";
 import { Report } from "./report.js";
+import { PropertyRenderer } from "./property_renderer.js";
 let memberManager = null;
 let transactionManager = null;
 const renderAbsentMembers = (tableAbsentMembers, absentMembersStat, absentMembers) => {
@@ -132,26 +133,6 @@ const renderResult = (report) => {
     renderPaidMembers(divTuitionFeeResult.querySelector(".paidMembers"), document.getElementById("paidMembersStat"), report.paidMembers);
     renderInvalidMembers(divTuitionFeeResult.querySelector(".invalidMembers"), document.getElementById("invalidMembersStat"), report.invalidMembers);
 };
-const renderDataProperties = (numMembers, numTransactions, oldestTransaction, newestTransaction) => {
-    const divProperties = document.getElementById("properties");
-    divProperties.style.display = null;
-    let tableDataProperties = divProperties.querySelector(".dataProperties");
-    tableDataProperties.innerHTML = "";
-    let tableRow = document.createElement("tr");
-    let tableDataNumMembers = document.createElement("td");
-    tableDataNumMembers.append(numMembers.toString());
-    tableRow.append(tableDataNumMembers);
-    let tableDataNumTransactions = document.createElement("td");
-    tableDataNumTransactions.append(numTransactions.toString());
-    tableRow.append(tableDataNumTransactions);
-    let tableDataOldestTransaction = document.createElement("td");
-    tableDataOldestTransaction.append(oldestTransaction.date.toISOString().split('T')[0]);
-    tableRow.append(tableDataOldestTransaction);
-    let tableDataNewestTransaction = document.createElement("td");
-    tableDataNewestTransaction.append(newestTransaction.date.toISOString().split('T')[0]);
-    tableRow.append(tableDataNewestTransaction);
-    tableDataProperties.append(tableRow);
-};
 const executeTuitionCalculation = () => {
     let absentMembers = Array();
     let unpaidMembers = Array();
@@ -190,7 +171,10 @@ const executeTuitionCalculation = () => {
         else
             paidMembers.push(new MatchedRecord(member, [correctAmountTransaction]));
     });
-    renderDataProperties(memberManager.members.length, transactionManager.transactions.length, transactionManager.getOldestTransaction(), transactionManager.getNewestTransaction());
+    const divProperties = document.getElementById("properties");
+    divProperties.style.display = null;
+    const propertyRenderer = new PropertyRenderer(document.getElementById("statistics"), document.getElementById("prices"));
+    propertyRenderer.renderProperties(memberManager.members.length, transactionManager.transactions.length, transactionManager.getOldestTransaction(), transactionManager.getNewestTransaction());
     renderResult(new Report(unpaidMembers, wrongAmountMembers, invalidMembers, absentMembers, paidMembers));
 };
 const executeAnnualFeeCalculation = () => {
