@@ -56,7 +56,7 @@
     </div>
 
     <div id="tuition_fee_result" style="display: none">
-        <h4>振り込みが確認できない会員<span id="unpaidMembersStat"></span></h4>
+        <h4>振り込みが確認できない会員 (<span id="unpaidMembersStat"></span>)</h4>
         <table>
             <thead>
                 <tr>
@@ -68,7 +68,7 @@
             <tbody class="unpaidMembers"></tbody>
         </table>
 
-        <h4>誤った金額を振り込んでいると思われる会員<span id="wrongAmountMembersStat"></span></h4>
+        <h4>誤った金額を振り込んでいると思われる会員 (<span id="wrongAmountMembersStat"></span>)</h4>
         <table>
             <thead>
                 <tr>
@@ -86,10 +86,21 @@
             <tbody class="wrongAmountMembers"></tbody>
         </table>
 
-        <h4>判定不能な会員<span id="invalidMembersStat"></span></h4>
-        <table class="invalidMembers"></table>
+        <h4>判定不能な会員 (<span id="invalidMembersStat"></span>)</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th class='name'>性</th>
+                    <th class='name'>名</th>
+                    <th class='name'>子弟の数</th>
+                    <th class='amount'>うち休学</th>
+                </tr>
+            </thead>
+            <tbody class="invalidMembers"></tbody>
+        </table>
+
         <hr>
-        <h4>子弟全員が休学中の会員<span id="absentMembersStat"></span></h4>
+        <h4>子弟全員が休学中の会員 (<span id="absentMembersStat"></span>)</h4>
         <table>
             <thead>
                 <tr>

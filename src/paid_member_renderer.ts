@@ -3,17 +3,16 @@ import {createSimpleDateString, createTableData} from "./utils.js";
 
 export class PaidMemberRenderer{
 
-    private tbodyPaidMembers: Element;
-    private spanPaidMembersStat: Element;
-
+    private tbody: Element;
+    private span: Element;
 
     constructor(tbodyPaidMembers:Element, spanPaidMembersStat:Element) {
-        this.tbodyPaidMembers = tbodyPaidMembers;
-        this.spanPaidMembersStat = spanPaidMembersStat;
+        this.tbody = tbodyPaidMembers;
+        this.span = spanPaidMembersStat;
     }
 
      renderPaidMembers = (matchedRecords: Array<MatchedRecord>)=>{
-        this.tbodyPaidMembers.innerHTML = "";
+        this.tbody.innerHTML = "";
 
         matchedRecords.forEach((matchedRecord)=>{
             let tableRow = document.createElement("tr");
@@ -31,8 +30,8 @@ export class PaidMemberRenderer{
                 transaction.purpose
             ]);
             tableData.forEach(data=>{ tableRow.append(data)});
-            this.tbodyPaidMembers.append(tableRow);
+            this.tbody.append(tableRow);
         });
-        this.spanPaidMembersStat.textContent = matchedRecords.length.toString();
+        this.span.textContent = matchedRecords.length.toString();
     }
 }

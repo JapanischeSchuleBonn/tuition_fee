@@ -6,6 +6,7 @@ import {Transaction} from "./transaction.js";
 import {Report} from "./report.js"
 import {PropertyRenderer} from "./property_renderer.js";
 import {PaidMemberRenderer} from "./paid_member_renderer.js";
+import {AbsentMemberRenderer} from "./absent_member_renderer.js";
 
 let memberManager:MemberManager = null;
 let transactionManager:TransactionManager = null;
@@ -133,8 +134,9 @@ const renderResult = (report: Report) =>{
         document.getElementById("wrongAmountMembersStat"), report.wrongAmountMembers);
     renderUnpaidMembers(divTuitionFeeResult.querySelector(".unpaidMembers"),
         document.getElementById("unpaidMembersStat"), report.unpaidMembers);
-    renderAbsentMembers(divTuitionFeeResult.querySelector(".absentMembers"),
-        document.getElementById("absentMembersStat"), report.absentMembers);
+
+    const absentMemberRenderer = new AbsentMemberRenderer(divTuitionFeeResult.querySelector(".absentMembers"), document.getElementById("absentMembersStat"));
+    absentMemberRenderer.render(report.absentMembers);
 
     const paidMemberRenderer = new PaidMemberRenderer(divTuitionFeeResult.querySelector(".paidMembers"), document.getElementById("paidMembersStat"));
     paidMemberRenderer.renderPaidMembers(report.paidMembers);
@@ -142,7 +144,6 @@ const renderResult = (report: Report) =>{
     renderInvalidMembers(divTuitionFeeResult.querySelector(".invalidMembers"),
         document.getElementById("invalidMembersStat"), report.invalidMembers);
 }
-
 
 const executeTuitionCalculation= () =>{
 
