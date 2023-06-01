@@ -1,4 +1,5 @@
 import * as Const from "./const.js";
+import * as Utils from "./utils.js";
 export class PropertyRenderer {
     constructor(tbodyStatistics, tbodyPrices) {
         this.tbodyStatistics = tbodyStatistics;
@@ -11,29 +12,26 @@ export class PropertyRenderer {
     renderStatistics(numMembers, numTransactions, oldestTransaction, newestTransaction) {
         this.tbodyStatistics.innerHTML = "";
         let tableRow = document.createElement("tr");
-        tableRow.append(this.createElement("td", numMembers.toString()));
-        tableRow.append(this.createElement("td", numTransactions.toString()));
-        tableRow.append(this.createElement("td", oldestTransaction.date.toISOString().split('T')[0]));
-        tableRow.append(this.createElement("td", newestTransaction.date.toISOString().split('T')[0]));
+        const tableData = Utils.createTableData([numMembers.toString(),
+            numTransactions.toString(),
+            Utils.createSimpleDateString(oldestTransaction.date),
+            Utils.createSimpleDateString(newestTransaction.date)]);
+        tableData.forEach(data => { tableRow.append(data); });
         this.tbodyStatistics.append(tableRow);
     }
     renderPrices() {
         this.tbodyPrices.innerHTML = "";
         let tableRow = document.createElement("tr");
-        tableRow.append(this.createElement("td", Const.annualFee.toString()));
-        tableRow.append(this.createElement("td", Const.tuition.toString()));
-        tableRow.append(this.createElement("td", Const.juniorClassTuition.toString()));
-        tableRow.append(this.createElement("td", Const.mathTuition.toString()));
-        tableRow.append(this.createElement("td", (-Const.discountUnit).toString()));
-        tableRow.append(this.createElement("td", (-Const.discountUnit * 2).toFixed(2).toString()));
-        tableRow.append(this.createElement("td", (-Const.discountUnit / 3 * 2).toFixed(2).toString()));
-        tableRow.append(this.createElement("td", (-Const.discountUnit * 2 / 3 * 2).toFixed(2).toString()));
+        const tableData = Utils.createTableData([Const.annualFee.toString(),
+            Const.tuition.toString(),
+            Const.juniorClassTuition.toString(),
+            Const.mathTuition.toString(),
+            (-Const.discountUnit).toString(),
+            (-Const.discountUnit * 2).toFixed(2).toString(),
+            (-Const.discountUnit / 3 * 2).toFixed(2).toString(),
+            (-Const.discountUnit * 2 / 3 * 2).toFixed(2).toString()]);
+        tableData.forEach(data => { tableRow.append(data); });
         this.tbodyPrices.append(tableRow);
-    }
-    createElement(tag, content) {
-        let element = document.createElement(tag);
-        element.append(content);
-        return element;
     }
 }
 //# sourceMappingURL=property_renderer.js.map
