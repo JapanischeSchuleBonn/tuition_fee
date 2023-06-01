@@ -1,7 +1,7 @@
 import { createSimpleDateString, createTableData } from "./utils.js";
 export class PaidMemberRenderer {
     constructor(tbodyPaidMembers, spanPaidMembersStat) {
-        this.renderPaidMembers = (matchedRecords) => {
+        this.render = (matchedRecords) => {
             this.tbody.innerHTML = "";
             matchedRecords.forEach((matchedRecord) => {
                 let tableRow = document.createElement("tr");

@@ -7,6 +7,7 @@ import {Report} from "./report.js"
 import {PropertyRenderer} from "./property_renderer.js";
 import {PaidMemberRenderer} from "./paid_member_renderer.js";
 import {AbsentMemberRenderer} from "./absent_member_renderer.js";
+import {WrongAmountMemberRenderer} from "./wrong_amount_member_renderer.js";
 
 let memberManager:MemberManager = null;
 let transactionManager:TransactionManager = null;
@@ -64,61 +65,6 @@ const renderUnpaidMembers = (tableUnpaidMembers:Element, unpaidMembersStat:Eleme
     unpaidMembersStat.textContent = " (" + unpaidMembers.length.toString() + "/" + memberManager.members.length.toString() + ")";
 }
 
-const renderWrongAmountMembers = (tableWrongAmountMembers:Element, wrongAmountMembersStat:Element, matchedRecord: Array<MatchedRecord>)=>{
-
-    tableWrongAmountMembers.innerHTML = "";
-
-    matchedRecord.forEach((matchedRecord)=>{
-        let tableRow = document.createElement("tr");
-        const member = matchedRecord.member;
-        const transaction = matchedRecord.transactions[0];
-
-        let tableDataLastNameInJapanese = document.createElement("td");
-        tableDataLastNameInJapanese.append(member.nameInJapanese.lastName);
-        tableRow.append(tableDataLastNameInJapanese);
-
-        let tableDataFirstNameInJapanese = document.createElement("td");
-        tableDataFirstNameInJapanese.append(member.nameInJapanese.firstName);
-        tableRow.append(tableDataFirstNameInJapanese);
-
-        let tableDataPartnerLastName = document.createElement("td");
-        tableDataPartnerLastName.append(member.partner.name.lastName);
-        tableRow.append(tableDataPartnerLastName);
-
-        let tableDataRequiredAmount = document.createElement("td");
-        tableDataRequiredAmount.classList.add("amount")
-        tableDataRequiredAmount.append(member.childrenState.getQuarterlyTuition().toString());
-        tableRow.append(tableDataRequiredAmount);
-
-        let tableDataPaidAmount = document.createElement("td");
-        tableDataPaidAmount.classList.add("amount")
-        tableDataPaidAmount.append(transaction.amount.toString());
-        tableRow.append(tableDataPaidAmount);
-
-        let tableDataDifference = document.createElement("td");
-        tableDataDifference.classList.add("amount")
-        const difference = transaction.amount - member.childrenState.getQuarterlyTuition();
-        const difText = difference < 0 ? Math.abs(difference).toString() + "不足" : difference.toString() + "余剰"
-        tableDataDifference.append(difText);
-        tableRow.append(tableDataDifference);
-
-        let tableDataDate = document.createElement("td");
-        tableDataDate.append(transaction.date.toISOString().split('T')[0]);
-        tableRow.append(tableDataDate);
-
-        let tableDataPayerName = document.createElement("td");
-        tableDataPayerName.append(transaction.payer);
-        tableRow.append(tableDataPayerName);
-
-        let tableDataPurpose = document.createElement("td");
-        tableDataPurpose.append(transaction.purpose.toString());
-        tableRow.append(tableDataPurpose);
-
-        tableWrongAmountMembers.append(tableRow);
-    });
-
-    wrongAmountMembersStat.textContent = " (" + matchedRecord.length.toString() + "/" + memberManager.members.length.toString() + ")";
-}
 
 const renderInvalidMembers = (tablePaidMembers:Element, invalidMembersStat: Element, members: Array<Member>) =>{
 
@@ -130,16 +76,18 @@ const renderResult = (report: Report) =>{
     divTuitionFeeResult.style.display = "block";
     divAnnualFeeResult.style.display = "none";
 
-    renderWrongAmountMembers(divTuitionFeeResult.querySelector(".wrongAmountMembers"),
-        document.getElementById("wrongAmountMembersStat"), report.wrongAmountMembers);
+
     renderUnpaidMembers(divTuitionFeeResult.querySelector(".unpaidMembers"),
         document.getElementById("unpaidMembersStat"), report.unpaidMembers);
+
+    const wrongAmountMemberRenderer = new WrongAmountMemberRenderer(divTuitionFeeResult.querySelector(".wrongAmountMembers"),document.getElementById("wrongAmountMembersStat"));
+    wrongAmountMemberRenderer.render(report.wrongAmountMembers);
 
     const absentMemberRenderer = new AbsentMemberRenderer(divTuitionFeeResult.querySelector(".absentMembers"), document.getElementById("absentMembersStat"));
     absentMemberRenderer.render(report.absentMembers);
 
     const paidMemberRenderer = new PaidMemberRenderer(divTuitionFeeResult.querySelector(".paidMembers"), document.getElementById("paidMembersStat"));
-    paidMemberRenderer.renderPaidMembers(report.paidMembers);
+    paidMemberRenderer.render(report.paidMembers);
 
     renderInvalidMembers(divTuitionFeeResult.querySelector(".invalidMembers"),
         document.getElementById("invalidMembersStat"), report.invalidMembers);
