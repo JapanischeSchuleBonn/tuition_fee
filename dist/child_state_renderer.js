@@ -20,4 +20,4 @@ export class ChildStateRenderer {
         this.span.textContent = absentMembers.length.toString();
     }
 }
-//# sourceMappingURL=absent_member_renderer.js.map
+//# sourceMappingURL=child_state_renderer.js.map

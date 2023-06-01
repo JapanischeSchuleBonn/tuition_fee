@@ -1,7 +1,7 @@
 import {Member} from "./member.js";
 import {createTableData} from "./utils.js";
 
-export class AbsentMemberRenderer{
+export class ChildStateRenderer {
 
     private tbody: Element;
     private span: Element;

@@ -1,12 +1,12 @@
 import { createTableData } from "./utils.js";
-export class ChildStateRenderer {
+export class InvalidMemberRenderer {
     constructor(tbody, span) {
         this.tbody = tbody;
         this.span = span;
     }
-    render(absentMembers) {
+    render(members) {
         this.tbody.innerHTML = "";
-        absentMembers.forEach((member) => {
+        members.forEach((member) => {
             let tableRow = document.createElement("tr");
             const tableData = createTableData([
                 member.nameInJapanese.lastName,
@@ -17,7 +17,7 @@ export class ChildStateRenderer {
             tableData.forEach(data => tableRow.append(data));
             this.tbody.append(tableRow);
         });
-        this.span.textContent = absentMembers.length.toString();
+        this.span.textContent = members.length.toString();
     }
 }
-//# sourceMappingURL=absent_member_renderer.js.map
+//# sourceMappingURL=invalid_member_renderer.js.map
