@@ -1,4 +1,5 @@
 
+
 export function createElement(tag:string, content:string){
     let element = document.createElement(tag);
     element.append(content);
@@ -16,3 +17,4 @@ export function createTableData(contents: Array<string>){
 export function createSimpleDateString(date: Date){
     return date.toISOString().split('T')[0];
 }
+
