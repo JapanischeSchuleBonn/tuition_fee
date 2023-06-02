@@ -84,3 +84,7 @@ th.note{
 td.amount {
     text-align: right;
 }
+
+span.highlight {
+    color: red;
+}

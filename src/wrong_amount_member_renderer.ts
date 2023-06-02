@@ -1,15 +1,18 @@
 import {MatchedRecord} from "./matched_record.js";
 import {createSimpleDateString, createTableData} from "./utils.js";
+import {Highlighter} from "./highlighter.js";
 
 export class WrongAmountMemberRenderer{
     tbody: Element;
     span: Element;
     fixedAmount?: number;
+    highlighter?: Highlighter;
 
-    constructor(tbody:Element, span: Element, fixAmount?: number) {
+    constructor(tbody:Element, span: Element, fixAmount?: number, highlighter?: Highlighter) {
         this.tbody = tbody;
         this.span = span;
         this.fixedAmount = fixAmount;
+        this.highlighter = highlighter;
     }
 
     render(matchedRecords: Array<MatchedRecord>){
@@ -25,6 +28,9 @@ export class WrongAmountMemberRenderer{
                 const difference = transaction.amount - requiredAmount;
                 const difText = difference < 0 ? Math.abs(difference).toString() + "不足" : difference.toString() + "余剰"
 
+                const processed = this.highlighter === undefined ? transaction.purpose :
+                    this.highlighter.addHighlight(transaction.purpose);
+
                 const tableData = createTableData([
                     member.nameInJapanese.lastName,
                     member.nameInJapanese.firstName,
@@ -34,8 +40,10 @@ export class WrongAmountMemberRenderer{
                     difText,
                     createSimpleDateString(transaction.date),
                     transaction.payer,
-                    transaction.purpose
+                    processed
                 ]);
+
+
                 if(transactions.length > 1){
                     if(index === 0) {
                         for (let i = 0; i < 4; ++i)

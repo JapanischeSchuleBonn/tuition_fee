@@ -1,6 +1,6 @@
 export function createElement(tag, content) {
     let element = document.createElement(tag);
-    element.append(content);
+    element.innerHTML = content;
     return element;
 }
 export function createTableData(contents) {

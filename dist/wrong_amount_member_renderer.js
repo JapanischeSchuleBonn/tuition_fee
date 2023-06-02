@@ -1,9 +1,10 @@
 import { createSimpleDateString, createTableData } from "./utils.js";
 export class WrongAmountMemberRenderer {
-    constructor(tbody, span, fixAmount) {
+    constructor(tbody, span, fixAmount, highlighter) {
         this.tbody = tbody;
         this.span = span;
         this.fixedAmount = fixAmount;
+        this.highlighter = highlighter;
     }
     render(matchedRecords) {
         this.tbody.innerHTML = "";
@@ -16,6 +17,8 @@ export class WrongAmountMemberRenderer {
                 const requiredAmount = (_a = this.fixedAmount) !== null && _a !== void 0 ? _a : member.childrenState.getQuarterlyTuition();
                 const difference = transaction.amount - requiredAmount;
                 const difText = difference < 0 ? Math.abs(difference).toString() + "不足" : difference.toString() + "余剰";
+                const processed = this.highlighter === undefined ? transaction.purpose :
+                    this.highlighter.addHighlight(transaction.purpose);
                 const tableData = createTableData([
                     member.nameInJapanese.lastName,
                     member.nameInJapanese.firstName,
@@ -25,7 +28,7 @@ export class WrongAmountMemberRenderer {
                     difText,
                     createSimpleDateString(transaction.date),
                     transaction.payer,
-                    transaction.purpose
+                    processed
                 ]);
                 if (transactions.length > 1) {
                     if (index === 0) {

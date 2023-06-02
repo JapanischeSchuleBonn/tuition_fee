@@ -2,7 +2,7 @@
 
 export function createElement(tag:string, content:string){
     let element = document.createElement(tag);
-    element.append(content);
+    element.innerHTML = content;
     return element;
 }
 
