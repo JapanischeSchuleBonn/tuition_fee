@@ -1,5 +1,5 @@
 export const annualFee = 50;
-export const tuition = 55;
-export const juniorClassTuition = 40;
-export const mathTuition = 18;
+export const tuition = 65;
+export const juniorClassTuition = 50;
+export const mathTuition = 28;
 export const discountUnit = 5;
